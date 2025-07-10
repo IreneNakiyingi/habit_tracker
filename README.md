@@ -30,7 +30,7 @@ python main.py
 6. Analytics  
 7. Save & Exit
 
-### 🖥️ Run GUI App (Tkinter)
+### 🖥️ Run GUI App (Tkinter) #Optional
 ```bash
 python gui.py
 ```
@@ -41,7 +41,8 @@ python gui.py
 
 ### 🧪 Run Tests
 ```bash
-pytest tests/test_all.py
+pytest tests/test.py
+pytest tests/test-analytics.py
 ```
 Runs unit tests for habit logic, completion, analytics.
 
@@ -56,7 +57,10 @@ habit_tracker/
 │   ├── manager.py         # HabitManager class
 │   └── analytics.py       # Functional analytics
 ├── data/
-│   └── habits.json   # User data (saved habits)
+│   └── habits.json   # User data (saving habits)
+│   └── habits_data.json   # preloaded + new User created data (saved habits)
+├── fixtures/
+│   └── example_data.json   # preloaded user data (saved habits)
 ├── tests/
 │   └── test.py        # Unit tests
     └── test_analytics.py        # Unit tests specifcally for analytics (optional)
@@ -64,7 +68,7 @@ habit_tracker/
 ```
 
 ## 📌 Notes
-- First run loads habits data from `data/habits.json`.
+- First run loads habits data from `fixtures/example_data.json`.
 
 ---
 Built with using OOP + Functional Programming in Python.
