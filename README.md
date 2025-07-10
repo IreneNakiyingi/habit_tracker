@@ -41,7 +41,6 @@ python gui.py
 
 ### 🧪 Run Tests
 ```bash
-pytest tests/test.py
 pytest tests/test-analytics.py
 pytest tests/test.py
 ```
