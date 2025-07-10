@@ -43,6 +43,7 @@ python gui.py
 ```bash
 pytest tests/test.py
 pytest tests/test-analytics.py
+pytest tests/test.py
 ```
 Runs unit tests for habit logic, completion, analytics.
 
