@@ -2,20 +2,30 @@
 from services.manager import HabitManager
 from services.analytics import (
     get_all_habits, get_habits_by_periodicity,
-    get_longest_streak_all, get_longest_streak_for_habit
+    get_longest_streak_all, get_longest_streak_for_habit,
+    get_most_frequent_habit, get_completion_rate, get_weekly_average
 )
+
+def display_habits(habits):
+    print("\nYour Habits:")
+    print("=" * 50)
+    for h in habits:
+        print(f"Name: {h.name}\tPeriodicity: {h.periodicity}\tCompletions: {len(h.checkoffs)}")
+    print("=" * 50)
 
 def main():
     manager = HabitManager()
-    manager.load_data()
+    manager.load_or_initialize()
 
     while True:
         print("\nHabit Tracker")
         print("1. Create Habit")
         print("2. List Habits")
         print("3. Complete Habit")
-        print("4. Analytics")
-        print("5. Save & Exit")
+        print("4. Edit Habit")
+        print("5. Delete Habit")
+        print("6. Analytics")
+        print("7. Save & Exit")
         choice = input("Choose an option: ")
 
         if choice == '1':
@@ -24,20 +34,37 @@ def main():
             manager.create_habit(name, freq)
 
         elif choice == '2':
-            for habit in manager.list_habits():
-                print(habit)
+            display_habits(manager.list_habits())
 
         elif choice == '3':
-            name = input("Enter habit name: ")
+            name = input("Enter habit name to complete: ")
             manager.mark_habit_complete(name)
 
         elif choice == '4':
-            print("\nAll habits:")
-            print(get_all_habits(manager))
-            print("\nLongest streaks:")
-            print(get_longest_streak_all(manager))
+            old_name = input("Enter current habit name: ")
+            new_name = input("Enter new name (leave blank to keep current): ")
+            new_freq = input("Enter new periodicity (leave blank to keep current): ")
+            manager.update_habit(old_name, new_name or None, new_freq or None)
 
         elif choice == '5':
+            name = input("Enter habit name to delete: ")
+            confirm = input(f"Are you sure you want to delete '{name}'? (y/n): ")
+            if confirm.lower() == 'y':
+                manager.delete_habit(name)
+
+        elif choice == '6':
+            print("\nAnalytics Report")
+            streaks = get_longest_streak_all(manager)
+            for name, days in streaks.items():
+                print(f"- {name}: Longest streak = {days} days")
+
+            frequent = get_most_frequent_habit(manager)
+            if frequent:
+                print(f"\nMost Frequent Habit: {frequent.name} ({len(frequent.checkoffs)} completions)")
+                print(f"Completion Rate: {get_completion_rate(frequent)}%")
+                print(f"Weekly Average: {get_weekly_average(frequent)} times/week")
+
+        elif choice == '7':
             manager.save_data()
             break
 

@@ -1,5 +1,5 @@
 # habit_tracker/services/analytics.py
-from datetime import datetime, timedelta
+from datetime import datetime;
 
 # Pure functional style helpers
 def get_all_habits(manager):
@@ -24,3 +24,22 @@ def get_longest_streak_for_habit(habit):
             max_streak = max(max_streak, streak)
             streak = 1
     return max(max_streak, streak)
+
+def get_most_frequent_habit(manager):
+    return max(manager.habits, key=lambda h: len(h.checkoffs), default=None)
+
+def get_completion_rate(habit):
+    from datetime import datetime, timedelta
+    if not habit.checkoffs:
+        return 0
+    start = datetime.fromisoformat(habit.created_at).date()
+    today = datetime.today().date()
+    days = (today - start).days or 1
+    return round(len(habit.checkoffs) / days * 100, 2)
+def get_weekly_average(habit):
+    from datetime import datetime
+    if not habit.checkoffs:
+        return 0
+    days = (datetime.today().date() - datetime.fromisoformat(habit.created_at).date()).days or 1
+    weeks = days / 7
+    return round(len(habit.checkoffs) / weeks, 2)
