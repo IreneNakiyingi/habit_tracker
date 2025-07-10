@@ -41,7 +41,7 @@ python gui.py
 
 ### 🧪 Run Tests
 ```bash
-pytest tests/test_all.py
+pytest tests/test.py
 ```
 Runs unit tests for habit logic, completion, analytics.
 
