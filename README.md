@@ -49,24 +49,22 @@ Runs unit tests for habit logic, completion, analytics.
 ```
 habit_tracker/
 ├── main.py                # CLI interface
-├── gui.py                 # Tkinter GUI
+├── gui.py                 # Tkinter GUI (optional)
 ├── models/
 │   └── habit.py           # Habit class
 ├── services/
-│   ├── manager.py         # HabitManager logic
+│   ├── manager.py         # HabitManager class
 │   └── analytics.py       # Functional analytics
 ├── data/
-│   └── habits_data.json   # User data (saved habits)
-├── fixtures/
-│   └── example_data.json  # Preloaded test habits
+│   └── habits.json   # User data (saved habits)
 ├── tests/
-│   └── test_all.py        # Unit tests
-└── README.md
+│   └── test.py        # Unit tests
+    └── test_analytics.py        # Unit tests specifcally for analytics (optional)
+└── README.md          #contains instructions for running and testing the app
 ```
 
 ## 📌 Notes
-- First run loads habits from `fixtures/example_data.json`.
-- After that, data is saved to `data/habits_data.json`.
+- First run loads habits data from `data/habits.json`.
 
 ---
 Built with using OOP + Functional Programming in Python.
