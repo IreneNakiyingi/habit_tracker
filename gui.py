@@ -1,4 +1,12 @@
 # habit_tracker/gui.py
+"""
+GUI module for the Habit Tracker App using Tkinter.
+
+Provides an interactive graphical interface for creating, editing,
+deleting, and completing habits, as well as viewing analytics.
+Built with Python's Tkinter library.
+"""
+
 import tkinter as tk
 from tkinter import messagebox, simpledialog
 from services.manager import HabitManager
@@ -10,7 +18,17 @@ from services.analytics import (
 )
 
 class HabitApp:
+    """
+    Main GUI application class for the Habit Tracker.
+
+    Attributes:
+        root (Tk): The main window of the Tkinter application.
+        manager (HabitManager): Handles habit operations and data.
+        habit_listbox (Listbox): Displays the list of habits.
+    """
+
     def __init__(self, root):
+        """Initializes the GUI, widgets, and loads saved or example data."""
         self.root = root
         self.root.title("Habit Tracker")
         self.manager = HabitManager()
@@ -25,15 +43,18 @@ class HabitApp:
         tk.Button(root, text="Edit Habit", command=self.edit_habit).pack(fill="x")
         tk.Button(root, text="Delete Habit", command=self.delete_habit).pack(fill="x")
         tk.Button(root, text="Complete Habit", command=self.complete_habit).pack(fill="x")
+        tk.Button(root, text="List Habits", command=self.refresh_habit_list).pack(fill="x")
         tk.Button(root, text="Show Analytics", command=self.show_analytics).pack(fill="x")
         tk.Button(root, text="Save & Quit", command=self.quit_app).pack(fill="x")
 
     def refresh_habit_list(self):
+        """Refreshes the displayed list of habits in the GUI."""
         self.habit_listbox.delete(0, tk.END)
         for habit in self.manager.list_habits():
             self.habit_listbox.insert(tk.END, str(habit))
 
     def create_habit(self):
+        """Prompts user to enter and create a new habit."""
         name = simpledialog.askstring("Habit Name", "Enter habit name:")
         periodicity = simpledialog.askstring("Periodicity", "Enter periodicity (daily/weekly):")
         if name and periodicity:
@@ -41,6 +62,7 @@ class HabitApp:
             self.refresh_habit_list()
 
     def edit_habit(self):
+        """Allows user to edit the selected habit's name and periodicity."""
         selection = self.habit_listbox.curselection()
         if selection:
             old_name = self.habit_listbox.get(selection[0]).split(" (")[0]
@@ -50,6 +72,7 @@ class HabitApp:
             self.refresh_habit_list()
 
     def delete_habit(self):
+        """Deletes the selected habit after user confirmation."""
         selection = self.habit_listbox.curselection()
         if selection:
             habit_name = self.habit_listbox.get(selection[0]).split(" (")[0]
@@ -59,6 +82,7 @@ class HabitApp:
                 self.refresh_habit_list()
 
     def complete_habit(self):
+        """Marks the selected habit as complete for the current day."""
         selection = self.habit_listbox.curselection()
         if selection:
             habit_name = self.habit_listbox.get(selection[0]).split(" (")[0]
@@ -66,6 +90,7 @@ class HabitApp:
             self.refresh_habit_list()
 
     def show_analytics(self):
+        """Displays a popup window with analytics about user habits."""
         streaks = get_longest_streak_all(self.manager)
         frequent = get_most_frequent_habit(self.manager)
         lines = [f"Longest Streaks:"]
@@ -80,6 +105,7 @@ class HabitApp:
         messagebox.showinfo("Habit Analytics", "\n".join(lines))
 
     def quit_app(self):
+        """Saves all data and closes the GUI application."""
         self.manager.save_data()
         self.root.destroy()
 

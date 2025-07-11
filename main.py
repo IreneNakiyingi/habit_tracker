@@ -1,4 +1,11 @@
 # habit_tracker/main.py
+"""
+Main entry point for the Habit Tracker CLI application.
+
+Provides a command-line interface to manage habits:
+creating, listing, editing, deleting, completing, and analyzing habits.
+"""
+
 from services.manager import HabitManager
 from services.analytics import (
     get_all_habits, get_habits_by_periodicity,
@@ -7,6 +14,7 @@ from services.analytics import (
 )
 
 def display_habits(habits):
+    """Prints a formatted list of habits."""
     print("\nYour Habits:")
     print("=" * 50)
     for h in habits:
@@ -14,6 +22,7 @@ def display_habits(habits):
     print("=" * 50)
 
 def main():
+    """Runs the interactive command-line loop for the habit tracker."""
     manager = HabitManager()
     manager.load_or_initialize()
 
